@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+<div class="form-group">
+  <div class="row">
+    <div class="col">
+      <h1>
+      <a href="https://ja.wikipedia.org/wiki/%E3%83%A9%E3%83%90%E3%83%BC%E3%83%80%E3%83%83%E3%82%AF%E3%83%BB%E3%83%87%E3%83%90%E3%83%83%E3%82%B0" target="_blank">AIとラバーダック・デバッグしてみよう</a>
+      </h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <input type="text" id="query" class="form-control">
+    </div>
+    <div class="col">
+      <button type="button" class="btn btn-primary" onclick="submitQuery()">送信</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div id="talk"></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<script>
+    function submitQuery(){
+        query = $( "#query" ).val()
+        $( "#query" ).val('りんな考え中。。。')
+        $( "#talk" ).append('あなた：' + query + '<br/>')
+        
+        $.getJSON("/rinna/" + query, function(json){
+            $( "#talk" ).append('りんな：' + json.generatedText + '<br/>')
+            $( "#query" ).val('')
+            });
+    }
+
+</script>
+{% endblock %}
