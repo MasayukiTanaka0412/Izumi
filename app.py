@@ -3,6 +3,9 @@ from transformers import T5Tokenizer, AutoModelForCausalLM
 from transformers import pipeline
 import re
 import json
+import os
+from azure.ai.textanalytics import TextAnalyticsClient
+from azure.core.credentials import AzureKeyCredential
 
 app = Flask(__name__)
 
@@ -23,5 +26,19 @@ def rinna(seed=None):
     m = re.search('^.+[.。?!？！]',resText)
     if m:
         resText = m.group()
-    resobj = {'generatedText' : resText}
+
+    client = authenticate_client()
+    documents = [resText]
+    response = client.analyze_sentiment(documents=documents)[0]
+    resobj = {}
+    resobj['generatedText'] = resText
+    resobj['sentiment'] = response.sentiment
+    
     return json.dumps(resobj)
+
+def authenticate_client():
+    ta_credential = AzureKeyCredential(os.environ["TEXT_API_KEY"])
+    text_analytics_client = TextAnalyticsClient(
+            endpoint=os.environ["TEXT_API_END_POINT"], 
+            credential=ta_credential)
+    return text_analytics_client
