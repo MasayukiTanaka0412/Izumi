@@ -11,6 +11,16 @@
   </div>
 
   <div class="row">
+    <div class="col-3">
+      <label for="select1a">声の種類:</label>
+    </div>
+    <div class="col">
+      <select id="voicetype" class="form-control">
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
     <div class="col">
       <input type="text" id="query" class="form-control">
     </div>
@@ -31,6 +41,32 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 <script>
+  if ('speechSynthesis' in window) {
+    //alert("このブラウザは音声合成に対応しています。🎉")
+  } else {
+    alert("このブラウザは音声合成に対応していません。😭")
+  }
+</script>
+
+<script>
+    function appendVoices() {
+      const voices = speechSynthesis.getVoices()
+      voices.forEach(voice => { 
+        if(!voice.lang.match('ja')) return
+          const option = document.createElement('option')
+          option.value = voice.name
+          option.text  = `${voice.name} (${voice.lang})` //　テンプレートリテラル (ES6)
+          option.setAttribute('selected', voice.default)
+          voicetype.appendChild(option)
+      });
+    }
+
+    appendVoices()
+
+    speechSynthesis.onvoiceschanged = e => {
+      appendVoices()
+    }
+
     function submitQuery(){
         query = $( "#query" ).val()
         $( "#query" ).val('りんな考え中。。。')
@@ -38,6 +74,15 @@
         
         $.getJSON("/rinna/" + query, function(json){
             $( "#talk" ).append('りんな：' + json.generatedText + '<br/>')
+
+            const uttr = new SpeechSynthesisUtterance(json.generatedText)
+            uttr.lang = "ja-JP"
+            uttr.voice = speechSynthesis
+              .getVoices()
+              .filter(voice => voice.name === $("#voicetype").val())[0]
+
+            speechSynthesis.speak(uttr)
+
             $( "#query" ).val('')
             });
     }
