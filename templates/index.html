@@ -25,7 +25,9 @@
       <input type="text" id="query" class="form-control">
     </div>
     <div class="col">
-      <button type="button" class="btn btn-secondary" onclick="startRecognize()">マイク</button>
+      <button type="button" class="btn btn-secondary" onclick="startRecognize()">
+        <img src="{{url_for('static', filename='microphone.png')}}" alt="音声認識" width="20px"/>
+      </button>
       <button type="button" class="btn btn-primary" onclick="submitQuery()">送信</button>
     </div>
   </div>
@@ -93,10 +95,10 @@
     function submitQuery(){
         query = $( "#query" ).val()
         $( "#query" ).val('りんな考え中。。。')
-        $( "#talk" ).append('あなた：' + query + '<br/>')
+        $( "#talk" ).append('<p class="text-right">あなた：' + query + '</p>')
         
         $.getJSON("/rinna/" + query, function(json){
-            $( "#talk" ).append('りんな (' + json.sentiment +')：' + json.generatedText + '<br/>')
+            $( "#talk" ).append('<p class="text-left">りんな (' + json.sentiment +')：' + json.generatedText + '</p>')
 
             const uttr = new SpeechSynthesisUtterance(json.generatedText)
             uttr.lang = "ja-JP"
