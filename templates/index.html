@@ -96,7 +96,7 @@
         $( "#talk" ).append('あなた：' + query + '<br/>')
         
         $.getJSON("/rinna/" + query, function(json){
-            $( "#talk" ).append('りんな：' + json.generatedText + '<br/>')
+            $( "#talk" ).append('りんな (' + json.sentiment +')：' + json.generatedText + '<br/>')
 
             const uttr = new SpeechSynthesisUtterance(json.generatedText)
             uttr.lang = "ja-JP"
