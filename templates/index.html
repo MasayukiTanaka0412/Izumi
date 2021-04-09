@@ -1,11 +1,12 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="container">
+<div class="container" >
 <div class="form-group">
   <div class="row">
     <div class="col">
       <h1>
-      <a href="https://ja.wikipedia.org/wiki/%E3%83%A9%E3%83%90%E3%83%BC%E3%83%80%E3%83%83%E3%82%AF%E3%83%BB%E3%83%87%E3%83%90%E3%83%83%E3%82%B0" target="_blank">AIとラバーダック・デバッグしてみよう</a>
+        <img src="{{url_for('static', filename='donky.png')}}" alt="ロゴ" width="50px"/>
+        王様の耳はロバの耳ロバの耳 (雑談AI「ろばみみ」)
       </h1>
     </div>
   </div>
@@ -58,7 +59,7 @@
   </div>
 
 
-<div id="talk" style="background-color: #b0c4de;" class="rounded"></div>
+<div id="talk" class="rounded"></div>
 
 </div>
 </div>
@@ -117,10 +118,10 @@
     function submitQuery(){
         query = $( "#query" ).val()
         $( "#query" ).val($("#charactername").val() + '考え中。。。')
-        $( "#talk" ).append('<div class="row"><div class="col">&nbsp;</div><div class="col bg-light border rounded">' + $("#yourname").val() + ':' + query + '</div></div>')
+        $( "#talk" ).append('<div class="row"><div class="col">&nbsp;</div><div class="col bg-info border rounded">' + $("#yourname").val() + ':' + query + '</div></div>')
         
         $.getJSON("/rinna/" + query, function(json){
-            $( "#talk" ).append('<div class="row"><div class="col bg-light border rounded">' + $("#charactername").val() + '(' + json.sentiment +')：' + json.generatedText + '</div><div class="col">&nbsp;</div></div>')
+            $( "#talk" ).append('<div class="row"><div class="col bg-info border rounded">' + $("#charactername").val() + '(' + json.sentiment +')：' + json.generatedText + '</div><div class="col">&nbsp;</div></div>')
 
             const uttr = new SpeechSynthesisUtterance(json.generatedText)
             uttr.lang = "ja-JP"
