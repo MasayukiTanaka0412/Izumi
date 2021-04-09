@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
 from transformers import T5Tokenizer, AutoModelForCausalLM
 from transformers import pipeline
 import re
@@ -16,7 +16,11 @@ classifier = pipeline('text-generation', model=model, tokenizer=tokenizer)
 @app.route("/")
 def index():
     name = "Hoge"
-    return render_template('index.html', title='Izumi the Rubber Duck')
+    return render_template('index.html', title='王様の耳はロバの耳ロバの耳 (雑談AI「ろばみみ」)')
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', )
 
 @app.route("/rinna/<seed>")
 def rinna(seed=None):
