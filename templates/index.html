@@ -32,11 +32,8 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col">
-      <div id="talk"></div>
-    </div>
-  </div>
+
+<div id="talk"></div>
 
 </div>
 </div>
@@ -95,10 +92,10 @@
     function submitQuery(){
         query = $( "#query" ).val()
         $( "#query" ).val('りんな考え中。。。')
-        $( "#talk" ).append('<p class="text-right">あなた：' + query + '</p>')
+        $( "#talk" ).append('<div class="row"><div class="col">&nbsp;</div><div class="col">あなた：' + query + '</div></div>')
         
         $.getJSON("/rinna/" + query, function(json){
-            $( "#talk" ).append('<p class="text-left">りんな (' + json.sentiment +')：' + json.generatedText + '</p>')
+            $( "#talk" ).append('<div class="row"><div class="col">りんな (' + json.sentiment +')：' + json.generatedText + '</div><div class="col">&nbsp;</div></div>')
 
             const uttr = new SpeechSynthesisUtterance(json.generatedText)
             uttr.lang = "ja-JP"
