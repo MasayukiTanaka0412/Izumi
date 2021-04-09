@@ -33,10 +33,11 @@ def rinna(seed=None):
 
     client = authenticate_client()
     documents = [resText]
-    response = client.analyze_sentiment(documents=documents)[0]
+    #response = client.analyze_sentiment(documents=documents)[0]
     resobj = {}
     resobj['generatedText'] = resText
-    resobj['sentiment'] = response.sentiment
+    #resobj['sentiment'] = response.sentiment
+    resobj['sentiment'] = ""
     
     return json.dumps(resobj)
 
