@@ -22,6 +22,21 @@
 
   <div class="row">
     <div class="col">
+      <label for="charactername">キャラクターの名前:</label>
+    </div>
+    <div class="col">
+      <input type="text" id="charactername" class="form-control" value="加藤恵">
+    </div>
+    <div class="col">
+      <label for="yourname">あなたの名前:</label>
+    </div>
+    <div class="col">
+      <input type="text" id="yourname" class="form-control" value="安芸倫也">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
       <input type="text" id="query" class="form-control">
     </div>
     <div class="col">
@@ -33,7 +48,7 @@
   </div>
 
 
-<div id="talk"></div>
+<div id="talk" style="background-color: #b0c4de;" class="rounded"></div>
 
 </div>
 </div>
@@ -77,7 +92,7 @@
         if(!voice.lang.match('ja')) return
           const option = document.createElement('option')
           option.value = voice.name
-          option.text  = `${voice.name} (${voice.lang})` //　テンプレートリテラル (ES6)
+          option.text  = `${voice.name} (${voice.lang})` 
           option.setAttribute('selected', voice.default)
           voicetype.appendChild(option)
       });
@@ -91,11 +106,11 @@
 
     function submitQuery(){
         query = $( "#query" ).val()
-        $( "#query" ).val('りんな考え中。。。')
-        $( "#talk" ).append('<div class="row"><div class="col">&nbsp;</div><div class="col">あなた：' + query + '</div></div>')
+        $( "#query" ).val($("#charactername").val() + '考え中。。。')
+        $( "#talk" ).append('<div class="row"><div class="col">&nbsp;</div><div class="col bg-light border rounded">' + $("#yourname").val() + ':' + query + '</div></div>')
         
         $.getJSON("/rinna/" + query, function(json){
-            $( "#talk" ).append('<div class="row"><div class="col">りんな (' + json.sentiment +')：' + json.generatedText + '</div><div class="col">&nbsp;</div></div>')
+            $( "#talk" ).append('<div class="row"><div class="col bg-light border rounded">' + $("#charactername").val() + '(' + json.sentiment +')：' + json.generatedText + '</div><div class="col">&nbsp;</div></div>')
 
             const uttr = new SpeechSynthesisUtterance(json.generatedText)
             uttr.lang = "ja-JP"
