@@ -6,7 +6,7 @@
     <div class="col">
       <h1>
         <img src="{{url_for('static', filename='donky.png')}}" alt="ロゴ" width="50px"/>
-        王様の耳はロバの耳ロバの耳 (雑談AI「ろばみみ」)
+        王様の耳はロバの耳 (雑談AI「ろばみみ」)
       </h1>
     </div>
   </div>
@@ -39,27 +39,29 @@
           <label for="yourname">あなたの名前:</label>
         </div>
         <div class="col">
-          <input type="text" id="yourname" class="form-control" value="安芸倫也">
+          <input type="text" id="yourname" class="form-control" value="あなた">
         </div>
       </div>
     </div>
   </div>
 
-
   <div class="row">
     <div class="col">
-      <input type="text" id="query" class="form-control">
+      <div id="talk" class="rounded"></div>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col">
+      <input type="text" id="query" class="form-control" autocomplete="off" onkeypress="queryKeyPressed(event.keyCode)"/>
     </div>
     <div class="col">
+      <button type="button" class="btn btn-primary" onclick="submitQuery()"> > </button>
       <button type="button" class="btn btn-secondary" onclick="startRecognize()">
         <img src="{{url_for('static', filename='microphone.png')}}" alt="音声認識" width="20px"/>
       </button>
-      <button type="button" class="btn btn-primary" onclick="submitQuery()">送信</button>
     </div>
   </div>
-
-
-<div id="talk" class="rounded"></div>
 
 </div>
 </div>
@@ -80,6 +82,8 @@
     recognition.continuous = false;
     recognition.interimResults = true;
     isSpeaking = false;
+
+    $( "#query" ).focus()
 
     function startRecognize(){
       isSpeaking = true;
@@ -115,13 +119,21 @@
       appendVoices()
     }
 
+    function queryKeyPressed(code){
+      if(13 === code){
+        submitQuery()
+      }
+    }
+
     function submitQuery(){
         query = $( "#query" ).val()
         $( "#query" ).val($("#charactername").val() + '考え中。。。')
-        $( "#talk" ).append('<div class="row"><div class="col">&nbsp;</div><div class="col bg-info border rounded">' + $("#yourname").val() + ':' + query + '</div></div>')
-        
+        $( "#talk" ).append('<div class="row"><div class="col">&nbsp;</div><div class="col bg-info border rounded"><img src="/static/you.png" width="80px"/>' + $("#yourname").val() + ':<br/>' + query + '</div></div>')
+        $( "#query" ).focus()
+        $( "#query" ).blur()
+
         $.getJSON("/rinna/" + query, function(json){
-            $( "#talk" ).append('<div class="row"><div class="col bg-info border rounded">' + $("#charactername").val() + '(' + json.sentiment +')：' + json.generatedText + '</div><div class="col">&nbsp;</div></div>')
+            $( "#talk" ).append('<div class="row"><div class="col bg-info border rounded"><img src="/static/character.png" width="80px"/>' + $("#charactername").val() + '(' + json.sentiment +')：<br/>' + json.generatedText + '</div><div class="col">&nbsp;</div></div>')
 
             const uttr = new SpeechSynthesisUtterance(json.generatedText)
             uttr.lang = "ja-JP"
@@ -132,6 +144,7 @@
             speechSynthesis.speak(uttr)
 
             $( "#query" ).val('')
+            $( "#query" ).focus()
             });
     }
 
