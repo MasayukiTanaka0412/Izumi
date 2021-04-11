@@ -9,8 +9,12 @@ from azure.core.credentials import AzureKeyCredential
 
 app = Flask(__name__)
 
-tokenizer = T5Tokenizer.from_pretrained("rinna/japanese-gpt2-medium")
-model = AutoModelForCausalLM.from_pretrained("rinna/japanese-gpt2-medium")
+#tokenizer = T5Tokenizer.from_pretrained("rinna/japanese-gpt2-medium")
+#model = AutoModelForCausalLM.from_pretrained("rinna/japanese-gpt2-medium")
+modelpath = os.environ["modelPath"]
+tokenizer = T5Tokenizer.from_pretrained(modelpath)
+model = AutoModelForCausalLM.from_pretrained(modelpath)
+
 classifier = pipeline('text-generation', model=model, tokenizer=tokenizer)
 
 @app.route("/")
