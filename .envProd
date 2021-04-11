@@ -1,0 +1,7 @@
+# Downloaded Application Settings from "izumirubberduck"
+TEXT_API_END_POINT="https://izumianalytics.cognitiveservices.azure.com/"
+TEXT_API_KEY="53565f0dba04407d809ec509103c8086"
+modelPath="/home/site/wwwroot/rinnamodel"
+min_length=10
+max_length=40
+max_time=5
