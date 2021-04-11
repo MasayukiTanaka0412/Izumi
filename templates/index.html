@@ -127,8 +127,9 @@
 
     function submitQuery(){
         query = $( "#query" ).val()
-        $( "#query" ).val($("#charactername").val() + '考え中。。。')
+        
         $( "#talk" ).append('<div class="row"><div class="col">&nbsp;</div><div class="col bg-info border rounded"><img src="/static/you.png" width="80px"/>' + $("#yourname").val() + ':<br/>' + query + '</div></div>')
+        $( "#query" ).val($("#charactername").val() + '考え中。。。')
         $( "#query" ).focus()
         $( "#query" ).blur()
 
