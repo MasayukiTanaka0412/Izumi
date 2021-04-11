@@ -9,8 +9,6 @@ from azure.core.credentials import AzureKeyCredential
 
 app = Flask(__name__)
 
-#tokenizer = T5Tokenizer.from_pretrained("rinna/japanese-gpt2-medium")
-#model = AutoModelForCausalLM.from_pretrained("rinna/japanese-gpt2-medium")
 modelpath = os.environ["modelPath"]
 tokenizer = T5Tokenizer.from_pretrained(modelpath)
 model = AutoModelForCausalLM.from_pretrained(modelpath)
@@ -28,7 +26,12 @@ def favicon():
 
 @app.route("/rinna/<seed>")
 def rinna(seed=None):
-    result = classifier(seed,max_length=40)
+    
+    min_length = int(os.environ["min_length"])
+    max_length = int(os.environ["max_length"])
+    max_time = int(os.environ["max_time"])
+
+    result = classifier(seed,min_length=min_length, max_length=max_length, max_time=max_time)
     resText = result[0]['generated_text']
     resText = resText.replace(seed,'')
     m = re.search('^.+[.。?!？！]',resText)
