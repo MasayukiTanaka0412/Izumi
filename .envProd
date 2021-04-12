@@ -4,4 +4,5 @@ TEXT_API_KEY="53565f0dba04407d809ec509103c8086"
 modelPath="/home/site/wwwroot/rinnamodel"
 min_length=10
 max_length=40
-max_time=5
+max_time=10
+num_workers=1
