@@ -6,12 +6,19 @@ import json
 import os
 from azure.ai.textanalytics import TextAnalyticsClient
 from azure.core.credentials import AzureKeyCredential
+import pickle
 
 app = Flask(__name__)
 
 modelpath = os.environ["modelPath"]
 tokenizer = T5Tokenizer.from_pretrained(modelpath)
-model = AutoModelForCausalLM.from_pretrained(modelpath)
+#tokenizer = None
+#with open(os.environ["pickledTokenizer"], 'rb') as f:
+#    tokenizer = pickle.load(f)
+
+model = None
+with open(os.environ["pickledModel"], 'rb') as f:
+    model = pickle.load(f)
 
 classifier = pipeline('text-generation', model=model, tokenizer=tokenizer)
 
