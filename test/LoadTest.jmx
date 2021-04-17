@@ -22,7 +22,7 @@
         <longProp name="ThreadGroup.start_time">1373789594000</longProp>
         <longProp name="ThreadGroup.end_time">1373789594000</longProp>
         <boolProp name="ThreadGroup.scheduler">true</boolProp>
-        <stringProp name="ThreadGroup.duration">3600</stringProp>
+        <stringProp name="ThreadGroup.duration">300</stringProp>
         <stringProp name="ThreadGroup.delay">5</stringProp>
         <stringProp name="TestPlan.comments">Think time 10 sec</stringProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>

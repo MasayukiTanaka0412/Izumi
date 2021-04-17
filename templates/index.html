@@ -6,7 +6,7 @@
     <div class="col">
       <h1>
         <img src="{{url_for('static', filename='donky.png')}}" alt="ロゴ" width="50px"/>
-        王様の耳はロバの耳 (雑談AI「ろばみみ」)
+        王様の耳はロバの耳 (雑談AI「ろばみみ」実験中)
       </h1>
     </div>
   </div>
@@ -40,6 +40,20 @@
         </div>
         <div class="col">
           <input type="text" id="yourname" class="form-control" value="あなた">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p>
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePolicy" aria-expanded="false" aria-controls="collapsePolicy">
+      データ保持ポリシー
+    </button>
+  </p>
+  <div class="collapse" id="collapsePolicy">
+    <div class="card card-body">
+        <div class="col">
+          トーク内容を含んだアクセスログは３０日間保持されます
         </div>
       </div>
     </div>
