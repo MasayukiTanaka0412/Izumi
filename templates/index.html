@@ -55,7 +55,19 @@
         <div class="col">
           トーク内容を含んだアクセスログは３０日間保持されます
         </div>
-      </div>
+    </div>
+  </div>
+
+  <p>
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDrive" aria-expanded="false" aria-controls="collapseDrive">
+      ドライブモード
+    </button>
+  </p>
+  <div class="collapse" id="collapseDrive">
+    <div class="card card-body">
+        <div class="col">
+          <img src="{{url_for('static', filename='drive.png')}}" alt="タップして会話" onclick="startRecognizeDrive()"/>
+        </div>
     </div>
   </div>
 
@@ -115,6 +127,23 @@
       recognition.start();
     }
 
+    function startRecognizeDrive(){
+      $( "#query" ).val('')
+      isSpeaking = true;
+      recognition.onresult = function (event) {
+        if(isSpeaking){  
+          $("#query").val(event.results[0][0].transcript)
+        }
+      };
+
+      recognition.onspeechend = function (event) {
+        isSpeaking = false;  
+        submitQueryDrive()
+      };
+
+      recognition.start();
+    }
+
     function appendVoices() {
       const voices = speechSynthesis.getVoices()
       voices.forEach(voice => { 
@@ -139,6 +168,24 @@
       }
     }
 
+    function submitQueryDrive(){
+        query = $( "#query" ).val()
+        
+        $( "#query" ).val(query + ' ' + $("#charactername").val() + '考え中。。。')
+
+        $.getJSON("/rinna/" + query, function(json){
+            $( "#query" ).val($("#charactername").val() + ':' + json.generatedText)
+            const uttr = new SpeechSynthesisUtterance(json.generatedText)
+            uttr.lang = "ja-JP"
+            uttr.voice = speechSynthesis
+              .getVoices()
+              .filter(voice => voice.name === $("#voicetype").val())[0]
+
+            speechSynthesis.speak(uttr)
+            $( "#query" ).focus()
+            });
+    }
+
     function submitQuery(){
         query = $( "#query" ).val()
         
@@ -157,7 +204,6 @@
               .filter(voice => voice.name === $("#voicetype").val())[0]
 
             speechSynthesis.speak(uttr)
-
             $( "#query" ).val('')
             $( "#query" ).focus()
             });
